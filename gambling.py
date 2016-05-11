@@ -27,6 +27,7 @@ def play(times, winProbability, strategy, initBet, balance):
     i = 0
     lost = 0
     bet = strategy(initBet, True, 0, balance)
+    balances = [balance]
     assert bet < balance , "Cannot bet more than your balance"
     while([i < times, True][times == 0] and balance > 0):
         i += 1
@@ -39,4 +40,5 @@ def play(times, winProbability, strategy, initBet, balance):
             balance += bet
             lost = 0
             bet = strategy(initBet, True, lost, balance)
-    return i
+        balances += [balance]
+    return (i, balance, balances)
