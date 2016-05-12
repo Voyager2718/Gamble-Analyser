@@ -10,7 +10,6 @@ gamblingTimes: How many times should it play.
 winningProbability = 0.49
 gamblingTimes = 0
 
-
 def strategy1(initBet, won, numberOfLosing, balance):
     assert type(initBet) == int , "variable initBet should be int"
     assert type(won) == bool , "variable won should be bool"
@@ -20,6 +19,7 @@ def strategy1(initBet, won, numberOfLosing, balance):
         return [int(initBet * pow(2, numberOfLosing)), balance][int(initBet * pow(2, numberOfLosing)) > balance]
     return [balance, initBet][balance>initBet]
 
+
 def roll(winProbability):
     return winProbability > r.random()
 
@@ -28,7 +28,7 @@ def play(times, winProbability, strategy, initBet, balance):
     lost = 0
     bet = strategy(initBet, True, 0, balance)
     balances = [balance]
-    assert bet < balance , "Cannot bet more than your balance"
+    assert bet <= balance , "Cannot bet more than your balance"
     while([i < times, True][times == 0] and balance > 0):
         i += 1
         result = roll(winProbability)
@@ -42,3 +42,24 @@ def play(times, winProbability, strategy, initBet, balance):
             bet = strategy(initBet, True, lost, balance)
         balances += [balance]
     return (i, balance, balances)
+
+def multiPlay(times, winProbability, strategy, initBet, balance):
+    loseAt = 0
+    for i in range(times):
+        loseAt += play(times, winProbability, strategy, initBet, balance)
+    return loseAt / times
+
+def getMaximumBalance(balances):
+    return max(balances)
+
+def getMaximumRatio(initBalance, balances):
+    return max(balances) / initBalance
+    
+
+
+def outputOnePlayToCSV(data, path, x = "time", y = "balance"):
+    fp = open(path, "w+")
+    fp.write("times, balance\n")
+    for i in range(len(data)):
+        fp.write(str(i + 1) + "," + str(data[i]) + "\n")
+    fp.close()
