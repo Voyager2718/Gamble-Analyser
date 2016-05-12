@@ -52,14 +52,28 @@ def multiPlay(times, winProbability, strategy, initBet, balance):
 def getMaximumBalance(balances):
     return max(balances)
 
-def getMaximumRatio(initBalance, balances):
+def getMaximumRatio(balances, initBalance):
     return max(balances) / initBalance
     
-
+def analyseRatioAndBalance(winProbability, strategy, begin, stepping, numberOfSteps, numberOfSamples = 100000):
+    bal = begin
+    ratios = []
+    r = 0.0
+    for i in range(numberOfSteps):
+        for j in range(numberOfSamples):
+            r += getMaximumRatio(play(0, winProbability, strategy, 100, bal)[2], bal)
+        ratios += [r / bal]
+        bal *= stepping
+    ret = []
+    bal = begin
+    for i in range(len(ratios)):
+        ret += [[bal, ratios[i]]]
+        bal *= stepping
+    return ret
 
 def outputOnePlayToCSV(data, path, x = "time", y = "balance"):
     fp = open(path, "w+")
-    fp.write("times, balance\n")
+    fp.write(x + "," + y + "\n")
     for i in range(len(data)):
         fp.write(str(i + 1) + "," + str(data[i]) + "\n")
     fp.close()
