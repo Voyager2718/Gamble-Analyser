@@ -65,16 +65,16 @@ def getAverageLoseTime(times, winProbability, strategy, initBet, balance):
         loseAt += play(times, winProbability, strategy, initBet, balance)[0]
     return loseAt / times
 
-def getAverageMaximumBalance(times, winProbability, strategy, initBet, balance):
+def getMaximumBalances(times, winProbability, strategy, initBet, balance):
     maxBalances = []
     for i in range(times):
-        maxBalances += [getMaximumBalance(play(times, winProbability, strategy, initBet, balance))[2]]
+        maxBalances += [getMaximumBalance(play(times, winProbability, strategy, initBet, balance)[2])]
     return maxBalances    
 
 def getAverageMaximumBalance(times, winProbability, strategy, initBet, balance):
     maxBalance = 0
     for i in range(times):
-        maxBalance += [getMaximumBalance(play(times, winProbability, strategy, initBet, balance))[2]]
+        maxBalance += [getMaximumBalance(play(times, winProbability, strategy, initBet, balance)[2])]
     return maxBalance / times
 
 def getMaximumBalance(balances):
