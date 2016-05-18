@@ -61,23 +61,15 @@ def getMaximumBalance(balances):
 def getMaximumRatio(balances, initBalance):
     return max(balances) / initBalance
     
-def analyseRatioAndBalance(winProbability, strategy, begin, stepping, numberOfSteps, numberOfSamples = 100000):
-    bal = begin
+def analyseRatioAndBalance(winProbability, strategy, begin, stepping, numberOfSteps, times = 100000):
     ratios = []
-    r = 0.0
+    balance = begin
     for i in range(numberOfSteps):
-        for j in range(numberOfSamples):
-            r += getMaximumRatio(play(0, winProbability, strategy, 100, bal)[2], bal)
-        ratios += [r / bal]
-        bal *= stepping
-    ret = []
-    bal = begin
-    for i in range(len(ratios)):
-        ret += [[bal, ratios[i]]]
-        bal *= stepping
-    return ret
+        ratios += [getAverageMaximumBalance(times, winProbability, strategy, 100, balance) / balance]
+        balance *= stepping
+    return ratios
 
-def outputOnePlayToCSV(data, path, x = "time", y = "balance"):
+def outputToCsv(data, path, x = "time", y = "balance"):
     fp = open(path, "w+")
     fp.write(x + "," + y + "\n")
     for i in range(len(data)):
