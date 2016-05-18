@@ -65,7 +65,7 @@ def getNominalDistribution(list):
 def getLoseRounds(rounds, winProbability, strategy, initBet, balance):
     ltime = []
     for i in range(rounds):
-        ltime += [play(rounds, winProbability, strategy, initBet, balance)[0]]
+        ltime += [play(0, winProbability, strategy, initBet, balance)[0]]
     return ltime
 
 def getAverageLoseRound(rounds, winProbability, strategy, initBet, balance):
@@ -94,12 +94,16 @@ def analyseRatioAndBalance(winProbability, strategy, begin, stepping, numberOfSt
         balance *= stepping
     return ratios
 
-def outputListToCsv(data, path, x = "time", y = "balance"):
+def writeListToCsv(data, path, x = "Time", y = "Balance"):
     fp = open(path, "w+")
     fp.write(x + "," + y + "\n")
     for i in range(len(data)):
         fp.write(str(i + 1) + "," + str(data[i]) + "\n")
     fp.close()
 
-def outputDictionaryToCsc(data, path, x = "balance", y = "ratio"):
-    pass
+def writeDictionaryToCsv(data, path, x = "Round", y = "Time"):
+    fp = open(path, "w+")
+    fp.write(x + "," + y + "\n")
+    for i in data:
+        fp.write(str(i) + "," + str(str(data[i])) + "\n")
+    fp.close()
